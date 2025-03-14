@@ -1,0 +1,222 @@
+---
+title: "My Pre-Registration"
+output: html_document
+bibliography: Pre-RegistrationBibliography.bib
+csl: apa.csl  
+---
+
+Adapted from [https://osf.io/preprints/metaarxiv/epgjd](https://osf.io/preprints/metaarxiv/epgjd) into markdown format.
+
+<details>
+
+-   [Study Information](#study-information)
+    -   [1. Title](#1-title)
+    -   [2. Authors](#2-authors)
+    -   [3. Description](#3-description)
+    -   [4. Hypotheses](#4-hypotheses)
+-   [Design Plan](#design-plan)
+    -   [5. Study type](#5-study-type)
+    -   [6. Blinding](#6-blinding)
+    -   [7. Is there any additional blinding in this study?](#7-is-there-any-additional-blinding-in-this-study-)
+    -   [8. Study design](#8-study-design)
+    -   [9. Randomization](#9-randomization)
+-   [Sampling Plan](#sampling-plan)
+    -   [10. Existing data](#10-existing-data)
+    -   [11. Explanation of existing data](#11-explanation-of-existing-data)
+    -   [12. Data collection procedures](#12-data-collection-procedures)
+    -   [13. Sample size](#13-sample-size)
+    -   [14. Sample size rationale](#14-sample-size-rationale)
+    -   [15. Stopping rule](#15-stopping-rule)
+-   [Variables](#variables)
+    -   [16. Manipulated variables](#16-manipulated-variables)
+    -   [17. Measured variables](#17-measured-variables)
+    -   [18. Indices](#18-indices)
+-   [Analysis Plan](#analysis-plan)
+    -   [19. Statistical models](#19-statistical-models)
+    -   [20. Transformations](#20-transformations)
+    -   [21. Inference criteria](#21-inference-criteria)
+    -   [22. Data exclusion](#22-data-exclusion)
+    -   [23. Missing data](#23-missing-data)
+    -   [24. Exploratory analysis](#24-exploratory-analysis)
+-   [Other](#other)
+    -   [25. Other](#25-other)
+
+</details>
+
+# Study Information 
+
+## 1. Title 
+
+> The Effect of Engaging in a Mindfulness Task on Visual Attention Task Performance.
+
+## 2. Authors 
+
+> Tricia Sarkar
+
+## 3. Description 
+
+### 3.1 - Previous Research about Mindfulness on Cognitive Performance
+> 	Mindfulness is a cognitive practice involving focusing on the present, ridding oneself of distractions, and getting in tune with one’s own body and mind. An early, in-depth systematic review about the effects of short-term mindfulness practices on different aspects of cognition found that mindfulness practices significantly improve performance on top-down attention (selective and sustained attention), executive function, and memory tasks [@chiesa_does_2011]. An early empirical study found that people who practice daily, quick mindfulness tasks show significant improvement in sustained and selective attention tasks in as few as 4 days [@zeidan_mindfulness_2010]. A recent meta-analysis confirmed these early results of the benefits of mindfulness on sustained attention, shifting attention, and working memory. These researchers also mention that the working theory behind these benefits is that practicing mindfulness trains one’s unwavering focus, and reduces automated thought patterns in favour of more intentional ones [@zainal_mindfulness_2024].
+
+### 3.2 - Mindfulness and Learning
+> Once mindfulness was found to be linked with improved sustained and selective attention, a new question was raised: does mindfulness have an impact in school environments? Learning tasks at school require paying conscious, intentional, top-down attention to filter out unimportant information from visual stimuli (such as textbooks or lecture slides) [@hobbiss_sustained_2024]. In theory, if practicing mindfulness has positive outcomes on the same types of attention required to learn in school, then implementing mindfulness tasks in school should yield beneficial learning outcomes for students. @morrison_taming_2014 set out to answer this question in their study, where they had an instructor regularly train university students on mindfulness once weekly for 7 weeks. After these 7 weeks, the experimental group reported higher levels of focus and better reaction times on a sustained attention task. A different study found that primary school students performed significantly better on attentional visual search tasks after regularly practicing mindfulness exercises in class for 10 weeks [@tarrasch_effects_2018]. Another study looked at implementing a short mindfulness practice at the beginning of a lecture, such as a “mindfulness minute” or a few minutes of “mindful movement”. This study found that students self-reported significantly better learning outcomes, more relaxation, and they paid more attention during the lesson [@vankuiken_calming_2017]. Overall, it seems like mindfulness tasks do improve attention in school-related tasks and environments.
+
+### 3.3 - Research Gap
+> Implementing mindfulness practices before lessons in school has shown significant benefits in student attention in the literature. However, the onset of the COVID-19 pandemic and the new use of virtual learning platforms gave rise to a new question: does mindfulness translate to online lessons? While interest in this domain has been growing, the current body of literature is sparse and inconsistent. One study asked nursing undergraduate students to participate in weekly virtual, self-directed mindfulness tasks like mindful breathing and body scans, before taking an attention-network test [@spadaro_exploring_2016]. The students reduced their reaction time by the end of the 8 weeks, indicating that the mindfulness tasks helped with cognitive skills, but this study did not explicitly mention improvements in selective and sustained attention. 
+
+> Notably, the conversation about mindfulness has shifted from its effect on cognition to its effect on mental health and wellbeing. In addition to the sparse online mindfulness tasks studies, not many studies exist regarding the effects of a one-time mindfulness task either, as most of the literature is saturated with studies looking at the effects of several weeks of regular mindfulness training. Another limitation of this body of research is the lack of representation of certain age groups. One study found that older adults above age 65 performed better on a battery of cognitive tests (including selective attention) after engaging in mindfulness training [@polsinelli_effects_2020], but this study, like many others, is lacking in sample size.
+
+> This study aims to investigate if engaging in a short mindfulness task improves one’s performance on a subsequent task designed to test sustained and selective attention. Selective and sustained attention is often operationalized by the reaction time and accuracy of selecting target stimuli in a visual search task, as seen in @tarrasch_effects_2018 and @ko_sustained_2017 studies. This study will use the same attention task. The results of this study will hopefully clarify the scope of the benefits of mindfulness, thereby helping online instructors shape a more effective lesson that maximizes student attention and engagement.
+
+## 4. Hypotheses 
+
+>### Hypothesis - Accuracy
+>  -   **H1:** If mindfulness improves attentional skills, participants who complete the mindfulness task will have a higher visual search task accuracy than participants who do not complete the mindfulness task.
+>  -   **H0:** If mindfulness worsens or has no effect on attentional skills, participants who complete the mindfulness task will have a lower or equal visual search task accuracy than participants who do not complete the mindfulness task.
+
+>### Hypothesis - Reaction time
+>  -   **H1:** If mindfulness improves attentional skills, participants who complete the mindfulness task will have a lower reaction time than participants who do not complete the mindfulness task.
+>  -   **H0:** If mindfulness worsens or has no effect on attentional skills, participants who complete the mindfulness task will have a higher or equal visual search task accuracy than participants who do not complete the mindfulness task.
+
+
+# Design Plan 
+
+## 5. Study type 
+
+> **Experiment** - Participants will be randomly assigned into the mindfulness group or the control group. Participants in the mindfulness group will watch a mindfulness module where they practice mindful breathing, body scans, and meditation. Participants in both conditions will complete a visual search task, and their accuracy and reaction time will be recorded.
+
+## 6. Blinding 
+
+- [ ] No blinding is involved in this study.
+
+- [x] For studies that involve human subjects, they will not know the treatment group to which they have been assigned.
+
+- [ ] Personnel who interact directly with the study subjects (either human or non-human subjects) will not be aware of the assigned treatments. (Commonly known as “double blind”)
+
+- [ ] Personnel who analyze the data collected from the study are not aware of the treatment applied to any given group.
+
+## 7. Is there any additional blinding in this study? 
+
+> Participants will not know which mindfulness task condition they are in to prevent any potential bias in their visual search task performance.
+
+## 8. Study design 
+
+> This is a between-subjects 2x2 design where both the experimental and control group complete the visual search task, but only the experimental group completes a preceding mindfulness task. The visual search task will consist of different shapes appearing on the screen with several different intervals of time in between. Participants must press the correct keyboard button associated with the shape they see.
+
+> -   Independent variable (IV): Engagement in mindfulness task (2 levels: Engagement, No engagement) 
+
+> -   Dependent variable 1 (DV1): Performance on visual search task. Measured with % accuracy
+
+> -   Dependent variable 2 (DV2): Performance on visual search task. Measured with reaction time in milliseconds
+
+## 9. Randomization 
+
+> We will use simple randomization, where each participant will be randomly sorted into one of the two groups (experimental or control). This will be done with a random number generator: <http://random.org>.
+
+# Sampling Plan 
+
+> This web experiment will be circulated arund the internet to gather as demographically diverse of a sample as possible to ensure that the results can be generalizable to everyone. This experiment does not focus on a specific sample.
+
+## 10. Existing data 
+
+-   [x] Registration prior to creation of data: As of the date of submission of this research plan for preregistration, the data have not yet been collected, created, or realized.
+-   [ ] Registration prior to any human observation of the data: As of the date of submission, the data exist but have not yet been quantified, constructed, observed, or reported by anyone - including individuals that are not associated with the proposed study. Examples include museum specimens that have not been measured and data that have been collected by non-human collectors and are inaccessible.
+-   [ ] Registration prior to accessing the data: As of the date of submission, the data exist, but have not been accessed by you or your collaborators. Commonly, this includes data that has been collected by another researcher or institution.
+-   [ ] Registration prior to analysis of the data: As of the date of submission, the data exist and you have accessed it, though no analysis has been conducted related to the research plan (including calculation of summary statistics). A common situation for this scenario when a large dataset exists that is used for many different studies over time, or when a data set is randomly split into a sample for exploratory analyses, and the other section of data is reserved for later confirmatory data analysis.
+-   [ ] Registration following analysis of the data: As of the date of submission, you have accessed and analyzed some of the data relevant to the research plan. This includes preliminary analysis of variables, calculation of descriptive statistics, and observation of data distributions. Please see cos.io/prereg for more information.
+
+## 11. Explanation of existing data 
+
+> This study will not be using data that already exists.
+
+## 12. Data collection procedures 
+
+> The web experiment will be posted on the internet for easy, global access. The experiment will also be circulated and promoted on the internet via social media and digital fliers. The experiment can be posted on university study boards (ex. SONA) to incentivise students to participate. Since there is no restriction on sample demographic, anybody can participate, given that they have access to a personal device and the internet.
+
+## 13. Sample size 
+
+> Our minimum target sample size is 64 participants for each condition, or 128 total. Our goal is to reach up to 1000 participants per condition. There are no financial or practical boundaries to recruiting more participants due to the web-based nature of this experiement.
+
+## 14. Sample size rationale 
+
+> A power analysis was conducted to measure the minimum required sample size to achieve a power of 0.8, an alpha of 0.05, and a Cohen's d of 0.5. 
+> This is the code:
+
+>install.packages("pwr")
+library(pwr)
+pwr.t.test(n = NULL, d = 0.5, sig.level = 0.05, power=0.8, type="two.sample")
+
+## 15. Stopping rule 
+
+> We can stop collecting data in a combination of 2 ways: proactively and retroactively.
+
+> -  Proactive: All promotional media can be taken down and removed from university boards when the survey exceeds 1000 response. 
+
+> -  Retroactive: We can only look at the first 1000 responses, and ignore the rest.
+
+# Variables 
+
+## 16. Manipulated variables 
+
+> The independent variable of whether a participant engages in a Mindfulness task is being manipulated.
+
+> The participants will randomly be in either a Mindfulness Task group, where the participant will do the mindfulness module + the visual search task, or a No Mindfulness Task group, which does only the visual search task.
+
+
+## 17. Measured variables 
+
+> 1. **Accuracy** - % of answers correctly identifying the shape (out of 100%) in the visual search task.
+
+> 2. **Reaction Time** - Milliseconds between the stimulus presentation and the participant's button press.
+
+
+## 18. Indices 
+
+> The mean of the %Accuracy for the two experiment groups (Mindfulness and No Mindfulness) and the mean of the reaction time for the two experiment groups (Mindfulness and No Mindfulness) will be measured to find a single measure for each DV. These means will later be used for the one-tailed independent-samples t-tests.
+
+> This experiment will also require measures of effect size (Cohen's d or Rank-Biserial correlation) and measures to test for the assumptions of a t-test. A potential Mann-Whitney test may need to be used. More details in Analysis plan.
+
+# Analysis Plan 
+
+
+## 19. Statistical models 
+
+> All tests will use an alpha level of 0.05. Two separate one-tailed independent samples **t-tests** will be used to analyze the data: 
+
+> 1. Mindfulness' effect on **%Accuracy** in Visual Search Task
+
+> 2. Mindfulness' effect on **Reaction Time** (ms) in Visual Search Task
+
+> These tests are one-tailed because the hypothesis is directional. A 95% confidence interval will be measured for each DV. If the data violates the assumptions of the t-est (assumption of normality, homogeneity of variance, independence), then a Mann-Whitney U test will be used instead. Normality will be measured with a Shapiro-Wilks test. Homogeneity of variance can be measured with a Levene's test.
+
+> Post-Hoc effect sizes will be measured using Cohen's d or a rank/biserial correlation.
+
+
+## 20. Transformations 
+
+> N/A
+
+## 21. Inference criteria 
+
+> All tests will use an alpha level (p-value) of 0.05. Tests will be one-tailed due to the directional nature of the hypothesis. A 95% confidence interval will be measured.
+
+## 22. Data exclusion 
+
+> - To account for "button-mashing", or participants pressing random buttons just to finish the test without trying, any data that appears truly random will be excluded.
+
+> - Data will also be excluded if the participants disengage from the experiment after the mindfulness portion for a long period of time. This is to ensure that the effects of the mindfulness exercize are "fresh".
+
+
+## 23. Missing data 
+
+> - Data will be excluded if participants do not finish the visual search task.
+
+> - Data will be excluded if participants take a long time between shapes in the visual search task (as measured reaction time will no longer be an accurate estimate)
+
+
+## 24. Exploratory analysis 
+
+> As demographic information is not being recorded for this study, there is little room for further exploratory analysis.
+
+# References
+

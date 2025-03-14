@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <script src="https://unpkg.com/jspsych@7.3.4"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey@1.0.1"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css"/>
+    <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+
+    /* initialize jsPsych */
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        jsPsych.data.displayData();
+      }
+    });
+
+    /* create timeline */
+    var timeline = [];
+
+    /* define welcome message trial */
+    
+    var welcome_key = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "Welcome to my epic survey. Don't get offended.",
+        choices: ['continue', 'continue (but slay)']
+    };
+    timeline.push(welcome_key);
+
+    /* define instructions trial */
+    var instructions = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <p>In this experiment, a survey will appear. Please answer honestly.</p>
+        <p> Press Any Key to Begin.</p>
+      `
+    };
+    timeline.push(instructions);
+    
+   /* checkbox trial */
+    var trial = {
+    type: jsPsychSurvey,
+    survey_json: {
+      showQuestionNumbers: false,
+      elements:
+        [
+          {
+            type: 'checkbox',
+            title: "Who do you like the best?", 
+            name: 'personLike', 
+            description: "You can select as many as you want.",
+            choices: ['Pallavi', 'Julia', 'Lynn', 'Tricia', 'Seb', 'Nick', 'Vivian', 'Ishan'], 
+            showOtherItem: false,
+            showSelectAllItem: false,
+            showNoneItem: false,
+            required: true,
+          }
+      ]
+    }
+  };
+    timeline.push(trial);
+
+    /* start the experiment */
+    jsPsych.run(timeline);
+
+  </script>
+</html>

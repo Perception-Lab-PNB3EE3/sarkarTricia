@@ -1,0 +1,138 @@
+---
+title: "Data Visualization Assignment"
+output: html_notebook
+---
+
+# Step 1 and 2
+Here I am setting my working directory and reading my file.
+
+```{r}
+setwd("C:/Users/trici/Downloads")
+data <- read.csv("assignment_dataVis_dataset.csv")
+```
+
+# Step 3
+Print summary statistics for each condition in the data set (e.g., mean, standard deviation). I do this by filtering the data by condition and column (x and y)
+
+```{r}
+mean_c1_x <- mean(data[data$condition=="condition_1",2])
+mean_c1_y <- mean(data[data$condition=="condition_1",3])
+mean_c2_x <- mean(data[data$condition=="condition_2",2])
+mean_c2_y <- mean(data[data$condition=="condition_2",3])
+mean_c3_x <- mean(data[data$condition=="condition_3",2])
+mean_c3_y <- mean(data[data$condition=="condition_3",3])
+mean_c4_x <- mean(data[data$condition=="condition_4",2])
+mean_c4_y <- mean(data[data$condition=="condition_4",3])
+
+sd_c1_x <- sd(data[data$condition=="condition_1",2])
+sd_c1_y <- sd(data[data$condition=="condition_1",3])
+sd_c2_x <- sd(data[data$condition=="condition_2",2])
+sd_c2_y <- sd(data[data$condition=="condition_2",3])
+sd_c3_x <- sd(data[data$condition=="condition_3",2])
+sd_c3_y <- sd(data[data$condition=="condition_3",3])
+sd_c4_x <- sd(data[data$condition=="condition_4",2])
+sd_c4_y <- sd(data[data$condition=="condition_4",3])
+
+paste("Conditions 1-4's x and y means are (in order):", mean_c1_x, mean_c1_y, mean_c2_x, mean_c2_y, mean_c3_x, mean_c3_y, mean_c4_x, mean_c4_y)
+paste("Conditions 1-4's x and y standard deviations are (in order):", sd_c1_x, sd_c1_y, sd_c2_x, sd_c2_y, sd_c3_x, sd_c3_y, sd_c4_x, sd_c4_y)
+
+```
+# Step 4
+Here I am installing a package called "tidyverse", which has functions that help me convert my data from a long format to a wide format. Converting the data to make it wide will help me isolate the x and y for each condition so I can plot them individually against each other.
+
+```{r}
+install.packages(tidyverse)
+library(tidyverse)
+
+# Add a row index for each condition to handle duplicates
+data <- data %>%
+  group_by(condition) %>%
+  mutate(row_id = row_number()) %>%
+  ungroup()
+
+# Reshape to wide format
+data_wide <- data %>%
+  pivot_wider(names_from = condition, values_from = c(x, y), names_sep = " ")
+colnames(data_wide) <- gsub(" ", "_", colnames(data_wide))
+data_wide <- as.data.frame(data_wide)
+
+print(data_wide)
+```
+### Now that the data is wide, I can start plotting the columns against each other.
+
+```{r}
+library(ggplot2)
+
+ggplot(data = data_wide, aes(x = x_condition_1, y = y_condition_1)) +
+  geom_point() +
+  labs(title = "Scatterplot of Condition 1", x = "X (Condition 1)", y = "Y (Condition 1)")
+
+ggplot(data = data_wide, aes(x = x_condition_2, y = y_condition_2)) +
+  geom_point() +
+  labs(title = "Scatterplot of Condition 2", x = "X (Condition 2)", y = "Y (Condition 2)")
+
+ggplot(data = data_wide, aes(x = x_condition_3, y = y_condition_3)) +
+  geom_point() +
+  labs(title = "Scatterplot of Condition 3", x = "X (Condition 1)", y = "Y (Condition 3)")
+
+ggplot(data = data_wide, aes(x = x_condition_4, y = y_condition_4)) +
+  geom_point() +
+  labs(title = "Scatterplot of Condition 4", x = "X (Condition 4)", y = "Y (Condition 4)")
+```
+### Now some more complicated graphs!
+
+```{r}
+ggplot(data = data_wide, aes(x = x_condition_1, y = y_condition_1)) +
+  geom_point(
+        color="pink",
+        fill="cornsilk",
+        shape=21,
+        alpha=0.5,
+        size=6,
+        stroke = 2
+        )
+
+ggplot(data_wide) +
+  geom_point(aes(x = x_condition_1, y = y_condition_1, color = "Condition 1")) +
+  geom_point(aes(x = x_condition_1, y = y_condition_2, color = "Condition 2")) +
+  geom_point(aes(x = x_condition_1, y = y_condition_3, color = "Condition 3")) +
+  geom_point(aes(x = x_condition_1, y = y_condition_4, color = "Condition 4")) +
+  labs(title = "All Y Conditions vs X Condition 1",
+       x = "X (Condition 1)",
+       y = "Y Values (Condition 1-4)",
+       color = "Condition") +
+  theme_minimal()
+
+ggplot(data = data_wide, aes(x = y_condition_1, y = x_condition_1)) +
+  geom_point() +
+  labs(title = "Sideways dinosaur LOL (condition 1 Y vs X flip)", x = "Y (Condition 1)", y = "X (Condition 1)")
+
+ggplot(data = data_wide, aes(x = x_condition_4, y = y_condition_4)) +
+  geom_point(
+        color="#ffe633",
+        fill="#e78128",
+        shape=21,
+        alpha=0.5,
+        size=6,
+        stroke = 2
+        ) +
+  labs(title = "Scatterplot of Condition 4", x = "X (Condition 4)", y = "Y (Condition 4)")
+
+```
+# Step 5
+### What can be concluded from the dataset?
+After plotting the dataset, I can conclude that they make very pretty pictures on the graphs. I don't see any trends though.
+
+### What did you find most challenging about this assignment?
+Converting the data from a long format to a wide format was the most challenging part of this assignment. I know there is probably a way to do this assignment with the long data format, but I knew that once I widen it, the process would be easier. It was the widening part that was tricky. I had to do several google searches, but I'm happy I was able to get the exact wide dataframe I wanted.
+
+I also think the hardest part about coding assignments like these is figuring out what I have to do next to get to the desired outcome. It took us talking about long and wide data in class for me to remember what it meant and realize that it would help make this assignment easier. Simply knowing what to do next can sometimes be the challenging part.
+
+### What did you learn in completing this assignment? What are you still curious about?
+I learned several things during this assignment: how to graph data in more complex ways, how to use the r graph gallery, how to convert data from long to wide, and how to find the mean and SD of parts of a dataset when it is in a long format.
+
+I am still curious about how to make MORE visually complex graphs, such as graphs with different shapes and colours to represent each variable. I wasn't able to figure this part out in time. I am also curious about what other packages exist in r and what they all do.
+
+### Why is it important to visualize data?
+
+Visualizing data is important if you want to share your findings with other people. It is much harder to analyse trends and important takeaways from a dataset if it is kept in a raw form. Visualizing the data correctly can make the data easier to understand, even for people who have no background in science. If I hadn't plotted the data for this assignment, I would have never known what pictures they came together to create.

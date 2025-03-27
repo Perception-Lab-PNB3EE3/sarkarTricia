@@ -1,0 +1,313 @@
+---
+title: "Analysis Code"
+output: html_document
+date: "2025-03-19"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+## 1. Install and Load Packages
+
+```{r, load packages}
+
+#Install relevant packages if you do not have them. I use these ones:
+library(psych)
+library(truncnorm)
+library(dplyr)
+library(car)
+library(effectsize)
+library(ggplot2)
+library(tibble)
+```
+
+## 2. Simulate the Data
+
+### Simulate all the participant responses and dependent variables
+
+```{r}
+# Read in the data (in a normal case)
+
+#Set seed for replication
+set.seed(1)
+
+# Simulating data (for our case)
+  nsubj = 128 #based on power analysis
+  nPerGroup = 64
+  nConds = 2
+  nTrials <- 10
+  mindfulness <- nPerGroup
+  NOmindfulness <- nPerGroup
+  condLabels = c("mindfulness", "NOmindfulness") #One group watches the mindfulness meditation video, the other group does not.
+  
+# Create participant IDs
+  Participant <- rep(1:nsubj, each = nTrials)
+  
+# Create condition labels
+  Condition <- rep(rep(condLabels, each = nPerGroup), each = nTrials) # 64 participants per condition
+
+# Simulate unique RT per trial depending on condition, truncate at 0 because people cannot have negative RT
+  reaction_timeDIST <- c(
+    rtruncnorm(nPerGroup * nTrials, a = 0, mean = 700, sd = 200),  # Mindfulness
+    rtruncnorm(nPerGroup * nTrials, a = 0, mean = 900, sd = 350)   # NOmindfulness
+  )
+  
+# Simulate accuracy per group
+  mindfulnessdistAccuracy <- rnorm(nPerGroup, mean = 95, sd = 10)
+  NOmindfulnessdistAccuracy <- rnorm(nPerGroup, mean = 90, sd = 10)
+
+# Round to nearest 10 and clip between 60 and 100
+  mindfulnessdistAccuracy <- pmin(pmax(round(mindfulnessdistAccuracy / 10) * 10, 0), 100)
+  NOmindfulnessdistAccuracy <- pmin(pmax(round(NOmindfulnessdistAccuracy / 10) * 10, 0), 100)
+
+# Repeat each accuracy value across 10 trials
+  accuracyM <- rep(mindfulnessdistAccuracy, each = nTrials)
+  accuracyNM <- rep(NOmindfulnessdistAccuracy, each = nTrials)
+  accuracyDIST <- c(accuracyM, accuracyNM)
+    
+# Simulate response and correct response
+  responses <- sample(c("triangle", "circle", "star"), nsubj * nTrials, replace = TRUE)
+  correct_responses <- sample(c("triangle", "circle", "star"), nsubj * nTrials, replace = TRUE)
+
+# Put everything into a dataframe
+  df <- data.frame(
+    Participant = Participant,
+    Condition = Condition,
+    trial_number = rep(1:nTrials, nsubj),
+    response = responses,
+    correct_response = correct_responses,
+    reaction_time = reaction_timeDIST,
+    avgAccuracy = accuracyDIST,
+    stringsAsFactors = TRUE
+  )
+
+  head(df)
+```
+
+## 3. Data Cleaning
+
+In a real situation, some data cleaning may be required. The following cases would require exclusion:
+
+  - If a participant spends an unrealistic amount of time on a trial (ex. longer than 2-3 seconds)
+  - If a participant gets every single trial incorrect (0% Accuracy)
+  - If a participant's accuracy indicates random or intentionally incorrect responses (>50% accuracy)
+
+In this **simulated** situation, since we have 64 participants (exactly how many we need to meet our power), and since every participant is simulated to have viable data, we will not exclude any.
+
+## 4. Data Analysis
+
+### (a) Lets do some **descriptive statistics**.
+
+```{r}
+#get summary/descriptive stats
+  describe(df[, c("reaction_time", "avgAccuracy")]) 
+
+#get mean RT and Accuracy per condition
+  df %>%
+    group_by(Condition) %>%
+    summarise(
+      mean_RT = mean(reaction_time, na.rm = TRUE),
+      sd_RT = sd(reaction_time, na.rm = TRUE),
+      mean_accuracy = mean(avgAccuracy, na.rm = TRUE),
+      sd_accuracy = sd(avgAccuracy, na.rm = TRUE)
+    )
+
+#save participant means for later tests
+  participant_meanRT <- df %>%
+    group_by(Participant, Condition) %>%
+    summarise(mean_RT = mean(reaction_time, na.rm = TRUE), .groups = "drop")
+  
+  participant_accuracy <- df %>%
+    group_by(Participant, Condition) %>%
+    summarise(mean_accuracy = mean(avgAccuracy, na.rm = TRUE), .groups = "drop")
+```
+```{r, echo = FALSE}
+#check variable distributions
+
+#density graphs
+  ggplot(participant_meanRT, aes(x = mean_RT, fill = Condition)) +
+    geom_density(alpha = 0.5) +
+    labs(
+      title = "Distribution of Mean Reaction Time by Condition",
+      x = "Mean Reaction Time (ms)",
+      y = "Density"
+    ) +
+    theme_minimal()
+  
+  ggplot(participant_accuracy, aes(x = mean_accuracy, fill = Condition)) +
+  geom_density(alpha = 0.5) +
+  labs(
+    title = "Distribution of Mean Accuracy by Condition",
+    x = "Mean Accuracy (%)",
+    y = "Density"
+  ) +
+  theme_minimal()
+
+#histogram
+  ggplot(participant_meanRT, aes(x = mean_RT, fill = Condition)) +
+  geom_histogram(alpha = 0.5, position = "identity", bins = 20) +
+  labs(title = "Histogram of Mean Reaction Time", x = "Mean RT (ms)", y = "Count") +
+  theme_minimal()
+  
+  ggplot(participant_accuracy, aes(x = mean_accuracy, fill = Condition)) +
+  geom_histogram(alpha = 0.5, position = "identity", bins = 20) +
+  labs(
+    title = "Histogram of Mean Accuracy",
+    x = "Mean Accuracy (%)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+#### **Key results:**
+
+- Mindfulness Condition
+  - mean Reaction Time = 701.6738 ms
+  - standard deviation Reaction Time = 201.4728	ms
+  - mean % Accuracy = 93.1250 
+  - standard deviation % Accuracy = 7.267524
+  
+    
+- Non-mindfulness Condition
+  - mean Reaction Time = 896.2458 ms
+  - standard deviation Reaction Time = 363.7926	ms
+  - mean % Accuracy = 87.8125
+  - standard deviation % Accuracy = 8.385984
+
+### (b) Lets move on to the **inferential** statistics.
+
+#### Hypothesis - Reaction time
+  -   **H1:** If mindfulness improves attentional skills, participants who complete the mindfulness task will have a lower reaction time than participants who do not complete the mindfulness task.
+  -   **H0:** If mindfulness worsens or has no effect on attentional skills, participants who complete the mindfulness task will have a higher or equal visual search task accuracy than participants who do not complete the mindfulness task.
+
+#### Hypothesis - Accuracy
+  -   **H1:** If mindfulness improves attentional skills, participants who complete the mindfulness task will have a higher visual search task accuracy than participants who do not complete the mindfulness task.
+  -   **H0:** If mindfulness worsens or has no effect on attentional skills, participants who complete the mindfulness task will have a lower or equal visual search task accuracy than participants who do not complete the mindfulness task.
+
+#### **We must first assess if the data meets the assumptions of a t-test.**
+
+```{r}
+# Test RT and Accuracy for normality for both conditions (Shapiro-Wilk Test)
+shapiro.test(participant_meanRT$mean_RT[participant_meanRT$Condition == "mindfulness"]) #p=0.789
+shapiro.test(participant_meanRT$mean_RT[participant_meanRT$Condition == "NOmindfulness"]) #p=0.8465
+
+shapiro.test(participant_accuracy$mean_accuracy[participant_accuracy$Condition == "mindfulness"]) #p < 0.001
+shapiro.test(participant_accuracy$mean_accuracy[participant_accuracy$Condition == "NOmindfulness"]) #p < 0.001
+
+# Test RT and Accuracy for homogeneity of variance for both conditions (Levene's Test)
+# Levene's Test for Reaction Time
+leveneTest(mean_RT ~ Condition, data = participant_meanRT) #p<0.001
+
+# Levene's Test for Accuracy
+leveneTest(mean_accuracy ~ Condition, data = participant_accuracy) #p=0.317
+
+```
+#### **t-test Assumption Tests Summary:**
+
+**1. Shapiro-Wilk Test Results:**
+
+- Reaction time is normally distributed in both conditions (p>0.05)
+- % Accuracy is NOT normally distributed in both conditions (p<0.05). This makes sense because the data is negatively skewed and most participants have 90-100% accuracy.
+
+**2. Levene's Test Results:**
+
+- Reaction time has an unequal variance across conditions (p < 0.001).
+- % Accuracy has an equal variance across conditions (p = 0.317).
+
+**3. Assumption of independence:**
+
+- This test meets the assumption of independence because: 
+    - Each participant is randomly sorted into either condition
+    - We use one data point per participant to represent their trials (mean RT and accuracy instead of individual trial values)
+    
+#### **What test do we use?**
+
+**Reaction time:** Normality ✓, Homogeneity of Variance ✖, Assumption of Independence ✓
+
+  **Test: Welch's t-test**
+
+**Accuracy:** Normality ✖, Homogeneity of Variance ✓, Assumption of Independence ✓
+
+  **Test: Wilcoxon test**
+
+#### **Now we can conduct the appropriate hypothesis tests.**
+
+```{r}
+# One-tailed Welch's t-test for mean RT
+t.test(mean_RT ~ Condition, data = participant_meanRT, var.equal = FALSE, alternative = "less") #p<0.001, CI=(-∞, -168.17)
+
+# Wilcoxon test for mean accuracy
+wilcox.test(mean_accuracy ~ Condition, data = participant_accuracy, alternative = "greater") #W = 2767, p<.001
+
+```
+```{r, echo = FALSE}
+#Condition Plots
+ggplot(participant_meanRT, aes(x = Condition, y = mean_RT, fill = Condition)) +
+  geom_boxplot(width = 0.5, alpha = 0.6, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.4, color = "black") +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white") +
+  labs(
+    title = "Mean Reaction Time by Condition",
+    x = "Condition",
+    y = "Mean Reaction Time (ms)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+ggplot(participant_accuracy, aes(x = Condition, y = mean_accuracy, fill = Condition)) +
+  geom_boxplot(width = 0.5, alpha = 0.6, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.4, color = "black") +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white") +
+  labs(
+    title = "Mean Accuracy by Condition",
+    x = "Condition",
+    y = "Mean Accuracy (%)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+#### **Now we can conduct post-hoc effect size tests.**
+
+```{r}
+#Conduct Cohen's d test for mean RT
+cohens_d(mean_RT ~ Condition, data = participant_meanRT) #d = -2.16, 95% CI [-2.60, -1.72]
+
+#Conduct Cohen's d test for mean Accuracy
+cohens_d(mean_accuracy ~ Condition, data = participant_accuracy) #d = 0.67, 95% CI [0.31, 1.03],
+
+```
+```{r, echo = FALSE}
+#Effect Size Plots
+effect_sizes <- tribble(
+  ~Measure,        ~Cohens_d, ~CI_low, ~CI_high,
+  "Reaction Time", -2.16,     -2.60,   -1.72,
+  "Accuracy",       0.67,      0.31,    1.03
+)
+
+ggplot(effect_sizes, aes(x = Measure, y = Cohens_d)) +
+  geom_point(size = 4) +
+  geom_errorbar(aes(ymin = CI_low, ymax = CI_high), width = 0.2) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
+  labs(
+    title = "Cohen's d for Reaction Time and Accuracy",
+    y = "Cohen's d",
+    x = NULL
+  ) +
+  theme_minimal()
+```
+
+## 5. Results
+
+### **Hypothesis Tests Summary:**
+
+**Welch's t-test results for Reaction Time:** participants in the mindfulness condition (M = 701.67 ms) responded **significantly faster** than those in the NOmindfulness condition (M = 896.25 ms), p<0.001. *We do not fail to reject the null hypothesis.*
+
+**Wilcoxon Test results for Accuracy:** participants in the mindfulness condition had **significantly higher** accuracy scores than those in the NOmindfulness condition, p<0.001. *We do not fail to reject the null hypothesis.*
+
+### **Effect Size**
+
+**Reaction Time**: There was a large effect of condition on reaction time (d = -2.16), indicating that participants in the mindfulness condition responded significantly faster than those in the NOmindfulness condition.
+
+**Accuracy**: There was a moderate to large effect of condition on accuracy (d = 0.67), indicating that  participants in the mindfulness condition performed more accurately than those in the NOmindfulness condition.
